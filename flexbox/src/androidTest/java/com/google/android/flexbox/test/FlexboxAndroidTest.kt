@@ -3970,6 +3970,58 @@ class FlexboxAndroidTest {
     @Test
     @FlakyTest
     @Throws(Throwable::class)
+    fun testAddItemProgrammatically_withFlexboxLayoutLayoutParams_specific_width() {
+        val activity = activityRule.activity
+        val flexboxLayout = createFlexboxLayout(
+          R.layout.activity_empty_children_specific_width,
+          object : Configuration {
+                override fun apply(flexboxLayout: FlexboxLayout) {
+                    flexboxLayout.alignItems = AlignItems.FLEX_START
+                    val first = createTextView(activity, "1", 0)
+                    val second = createTextView(activity, "2", 0)
+                    val third = createTextView(activity, "3", 0)
+                    val fourth = createTextView(activity, "4", 0)
+                    val lp1 = FlexboxLayout.LayoutParams(100, 100)
+                    lp1.setMargins(0, 0, 0, 0)
+                    lp1.flexBasisPercent = 0.25f
+                    val lp2 = FlexboxLayout.LayoutParams(100, 100)
+                    lp2.setMargins(0, 0, 0, 0)
+                    lp2.flexBasisPercent = 0.25f
+                    val lp3 = FlexboxLayout.LayoutParams(100, 100)
+                    lp3.setMargins(0, 0, 0, 0)
+                    lp3.flexBasisPercent = 0.25f
+                    val lp4 = FlexboxLayout.LayoutParams(100, 100)
+                    lp4.setMargins(0, 0, 0, 0)
+                    lp4.flexBasisPercent = 0.25f
+                    first.layoutParams = lp1
+                    second.layoutParams = lp2
+                    third.layoutParams = lp3
+                    fourth.layoutParams = lp4
+                    flexboxLayout.addView(first)
+                    flexboxLayout.addView(second)
+                    flexboxLayout.addView(third)
+                    flexboxLayout.addView(fourth)
+                }
+            })
+        assertThat(flexboxLayout.childCount, `is`(4))
+        val view1 = flexboxLayout.getChildAt(0)
+        val view2 = flexboxLayout.getChildAt(1)
+        val view3 = flexboxLayout.getChildAt(2)
+        val view4 = flexboxLayout.getChildAt(3)
+        // Assert the coordinates of the views added programmatically with margins
+        assertThat(view1.width, `is`(Math.round(flexboxLayout.width * 0.25f)))
+        assertThat(view1.top, `is`(0))
+        assertThat(view2.width, `is`(Math.round(flexboxLayout.width * 0.25f)))
+        assertThat(view2.top, `is`(0))
+        assertThat(view3.width, `is`(Math.round(flexboxLayout.width * 0.25f)))
+        assertThat(view3.top, `is`(0))
+        assertThat(view4.width, `is`(Math.round(flexboxLayout.width * 0.25f)))
+        assertThat(view4.top, `is`(0))
+    }
+
+    @Test
+    @FlakyTest
+    @Throws(Throwable::class)
     fun testMaxLines() {
         val activity = activityRule.activity
         val flexboxLayout = createFlexboxLayout(R.layout.activity_empty_children,
